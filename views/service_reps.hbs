@@ -1,0 +1,101 @@
+{{!-- Create a table --}}
+<<table id="service-representatives-table">>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the paddrstate renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+            <th>edit</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, namemid and location_name, in order --}}
+        {{#each data}}
+        <tr data-value={{this.service_rep_id}}>
+            <td>{{this.service_rep_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.middle_name}}</td>
+            <td>{{this.location_name}}</td>
+            <td>{{this.location_id}}</td>
+            <td><button onclick="deleteServiceRep({{this.service_rep_id}})">Delete</button></td>
+            <td><button onclick="updateServiceRep({{this.service_rep_id}},'{{this.first_name}}','{{this.last_name}}','{{this.middle_name}}','{{this.location_name}}',{{this.location_id}})">update</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+{{!-- By default hidden update service rep form.  --}}
+<div id='update_rep_form' class='hidden'>
+<h2>Update Servie Rep</h2>
+<form id="update-service-rep-form-ajax">
+    <label for="update-fname">First Name: </label>
+    <input type="text" name="update-fname" id="update-fname">
+    
+    <label for="update-lname">Last Name: </label>
+    <input type="text" name="update-lname" id="update-lname">
+
+    <label for="update-midname">Middle Name: </label>
+    <input type="text" name="update-midname" id="update-midname">
+
+    <select name="update-location" id="update-location-ajax-service-rep">
+        <option value="">Select a location</option>
+        {{#each locations}}
+        <option value="{{this.location_id}}">{{this.location_name}}</option>
+        {{/each}}
+    </select>
+    <input type="submit" value = "Submit Changes">
+    <input type="button" value="Cancel" onclick="closeUpdateForm()">
+</form>
+
+</div>
+{{!
+How is the add (submit new rep button works ? how is it connected to the addservice rep.js file and the routes in app.js)
+******** ******  ****** 
+for the update form submit should I use the same submit here  that adds the service rep ? 
+Locations drop down menu items coming from none location places ? or people added those. check.
+ask about git ignore files and what to push.
+locations allows adding empty everything and the same things. 
+Locations for the service reps can't be Null currently.
+how does the submit for the add works ? without any direction?
+how to update the dropdowns ? 
+}}
+
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add New Servie Rep</h2>
+<form id="add-service-rep-form-ajax">
+    <label for="input-fname">First Name: </label>
+    <input type="text" name="input-fname" id="input-fname">
+    
+    <label for="input-lname">Last Name: </label>
+    <input type="text" name="input-lname" id="input-lname">
+
+    <label for="input-midname">Middle Name: </label>
+    <input type="text" name="input-midname" id="input-midname">
+
+    <select name="input-location" id="input-location-ajax-service-rep">
+        <option value="">Select a location</option>
+        {{#each locations}}
+        <option value="{{this.location_id}}">{{this.location_name}}</option>
+        {{/each}}
+    </select>
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_service_rep.js"></script>
+<script src="./js/delete_service_rep.js"></script>
+<script src="./js/update_customer_serv_rep.js"></script>

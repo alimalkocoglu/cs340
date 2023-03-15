@@ -1,0 +1,78 @@
+<h1>EVERETT AUTO REPAIR STORES</h1>
+<p> Everett Auto Repairs Database Management System</p>
+
+
+{{!-- Create a table --}}
+<<table id="customers-vehicle-table">>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the paddrstate renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, address1 and addrstate, in order --}}
+        {{#each data}}
+        <tr data-value={{this.customer_id}}>
+            <td>{{this.customer_id}}</td>
+            <td>{{this.vehicle_id}}</td>
+            <td>{{this.vin_number}}</td>
+            <td>{{this.make}}</td>
+            <td>{{this.model}}</td>
+            <td>{{this.year}}</td>
+            <td>{{this.mileage}}</td>
+            <td>{{this.trim}}</td>
+            <td>{{this.engine_type}}</td>
+            <td>{{this.license_plate}}</td>
+            <td><button onclick="deleteCustomer({{this.vehicle_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add New Customer Vehicle</h2>
+<form id="add-customer-vehicle-form-ajax">
+
+    <label for="input-vin_number">Vin Number: </label>
+    <input type="text" name="input-vin_number" id="input-vin_number">
+    
+    <label for="input-make">Make: </label>
+    <input type="text" name="input-make" id="input-make">
+
+    <label for="input-model">Model: </label>
+    <input type="text" name="input-model" id="input-model">
+
+    <label for="input-year">Year: </label>
+    <input type="text" name="input-year" id="input-year">
+    
+    <label for="input-mileage">Milage: </label>
+    <input type="text" name="input-mileage" id="input-mileage">
+
+    <label for="input-trim">Trim: </label>
+    <input type="text" name="input-trim" id="input-trim">
+
+    <label for="input-engine_type">Engine Type: </label>
+    <input type="text" name="input-engine_type" id="input-engine_type">
+
+    <label for="input-license_plate">License Plate: </label>
+    <input type="text" name="input-license_plate" id="input-license_plate">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+{{!-- <script src="./js/delete_customer.js"></script> --}}
+<script src="./js/add_customer_vehicle.js"></script>		

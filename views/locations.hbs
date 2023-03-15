@@ -1,0 +1,71 @@
+{{!-- Create a table --}}
+<<table id="locations-table">>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the paddrstate renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, namemid and location_name, in order --}}
+        {{#each data}}
+        <tr data-value={{this.location_id}}>
+            <td>{{this.location_id}}</td>
+            <td>{{this.address1}}</td>
+            <td>{{this.address2}}</td>
+            <td>{{this.address_city}}</td>
+            <td>{{this.address_state}}</td>
+            <td>{{this.address_zip}}</td>
+            <td>{{this.phone_number}}</td>
+            <td>{{this.location_name}}</td>
+            <td><button onclick="deleteLocation({{this.location_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add New Location</h2>
+<form id="add-location-form-ajax">
+
+    <label for="input-address1">Address1: </label>
+    <input type="text" name="input-address1" id="input-address1">
+    
+    <label for="input-address2">Address2: </label>
+    <input type="text" name="input-address2" id="input-address2">
+
+    <label for="input-addrcity">Address City: </label>
+    <input type="text" name="input-addrcity" id="input-addrcity">
+
+    <label for="input-addrstate">Address State: </label>
+    <input type="text" name="input-addrstate" id="input-addrstate">
+
+    <label for="input-addrzip">Address Zip: </label>
+    <input type="text" name="input-addrzip" id="input-addrzip">
+
+    <label for="input-phonenum">Phone Number: </label>
+    <input type="text" name="input-phonenum	" id="input-phonenum">
+
+    <label for="input-locationname">Location Name: </label>
+    <input type="text" name="input-	locationname" id="input-locationname">
+
+
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_locations.js"></script>
+<script src="./js/delete_location.js"></script>

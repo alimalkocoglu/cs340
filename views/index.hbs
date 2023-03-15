@@ -1,0 +1,89 @@
+<h1>EVERETT AUTO REPAIR STORES</h1>
+
+{{!-- Create a table --}}
+<<table id="customers-table">>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the paddrstate renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, address1 and addrstate, in order --}}
+        {{#each data}}
+        <tr data-value={{this.customer_id}}>
+            <td>{{this.customer_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.middle_name}}</td>
+            <td>{{this.address1}}</td>
+            <td>{{this.address2}}</td>
+            <td>{{this.address_city}}</td>
+            <td>{{this.address_state}}</td>
+            <td>{{this.address_zip}}</td>
+            <td>{{this.phone_number}}</td>
+            <td><button onclick="deleteCustomer({{this.customer_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+
+<h2>Search Customers</h2>
+<p>Search by last name using the field below. Partial last names are OK too!</p>
+<form id="search-person-html" method='GET' action='/'>
+    <label for="input-lname">Search by Last Name: </label>
+    <input type="text" name="lname" id="input-lname-html-search">
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add New Customer</h2>
+<form id="add-customer-form-ajax">
+    <label for="input-fname">First Name: </label>
+    <input type="text" name="input-fname" id="input-fname">
+    
+    <label for="input-lname">Last Name: </label>
+    <input type="text" name="input-lname" id="input-lname">
+
+    <label for="input-midname">Middle Name: </label>
+    <input type="text" name="input-midname" id="input-midname">
+
+    <label for="input-address1">address1: </label>
+    <input type="text" name="input-address1" id="input-address1">
+    
+    <label for="input-address2">address2: </label>
+    <input type="text" name="input-address2" id="input-address2">
+
+    <label for="input-addrcity">city: </label>
+    <input type="text" name="input-addrcity" id="input-addrcity">
+
+    <label for="input-addrstate">state: </label>
+    <input type="text" name="input-addrstate" id="input-addrstate">
+
+    <label for="input-addrzip">zip: </label>
+    <input type="text" name="input-addrzip" id="input-addrzip">
+
+    <label for="input-phonenum">phone: </label>
+    <input type="text" name="input-phonenum" id="input-phonenum">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/delete_customer.js"></script>
+<script src="./js/add_customer.js"></script>							
