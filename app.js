@@ -105,7 +105,7 @@ app.get('/service_representatives', function(req, res)
     {  
         let data = req.body;
          // Declare Query 1
-         let query1 = `SELECT service_rep_id, first_name, last_name, middle_name, location_name , service_representatives.location_id FROM service_representatives JOIN locations ON locations.location_id = service_representatives.location_id ORDER BY service_rep_id ASC;`
+         let query1 = `SELECT service_rep_id, first_name, last_name, middle_name, location_name , service_representatives.location_id FROM service_representatives LEFT JOIN locations ON locations.location_id = service_representatives.location_id ORDER BY service_rep_id ASC;`
 
          // Query 2 is the same in both cases
          let query2 = "SELECT * FROM locations;";
