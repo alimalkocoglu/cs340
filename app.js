@@ -345,6 +345,143 @@ app.get('/locations', function(req, res)
         })
     });
 
+
+
+/*
+service orders
+*/
+
+app.get('/service_orders', function(req, res)
+    {  
+        console.log("service order befoee all")
+        //let data = req.body;
+         // Declare Query 1
+         let query1 = `SELECT
+         so.service_rep_id,
+         sr.first_name AS rep_firstname,
+         sr.last_name AS rep_lastname,
+         cst.first_name AS customer_firstname,
+         cst.last_name AS customer_lastname,
+         cv.license_plate,
+         cv.make,
+         cv.model,
+         so.service_date_created,
+         so.service_date_completed,
+         so.vehicle_id,
+         so.customer_id
+         FROM service_orders as so
+         INNER JOIN customers as cst ON cst.customer_id = so.customer_id
+         INNER JOIN customer_vehicles as cv ON cst.customer_id = cv.customer_id
+         INNER JOIN service_representatives as sr ON so.service_rep_id = sr.service_rep_id;`
+
+         // Query 2 is the same in both cases
+         let query2 = "SELECT * FROM locations;";
+     
+         // Run the 1st query
+         db.pool.query(query1, function(error, rows, fields){
+             
+             // Save the service reps
+             let service_orders = rows;
+             console.log(service_orders)
+             res.render('service_orders',{data: service_orders})
+             
+             // Run the second query
+            //  db.pool.query(query2, (error, rows, fields) => {
+                 
+            //      // Save the locations
+            //      let locations = rows;
+            //      return res.render('service_reps', {data: service_reps, locations: locations});
+            //  })                                                    
+    })
+    });
+
+/*
+    service items
+*/
+
+app.get('/service_items', function(req, res)
+    {  
+        let data = req.body;
+         // Declare Query 1
+         let query1 = `SELECT service_item_id, price, service_name FROM service_items ORDER BY service_item_id ASC;`
+
+         // Run the 1st query
+         db.pool.query(query1, function(error, rows, fields){       
+               
+             // Save the locations
+             let service_items = rows;
+             return res.render('service_items', {data: service_items, service_items: service_items});
+                                             
+    })
+    });
+
+    app.delete('/delete-service-items-ajax', function(req,res,next)
+    {
+    let data = req.body;
+    let service_item_id = parseInt(data.service_item_id);
+    let deleteServiceItems= `DELETE FROM service_items WHERE service_item_id = ?`;
+  
+    db.pool.query(deleteServiceItems, [service_item_id], function(error, rows, fields) {
+  
+    if (error) {
+     console.log(error);
+     res.sendStatus(400);
+    } else {
+        res.sendStatus(204);
+        }
+    })
+    });
+
+    app.put('/update-serviceitems-ajax', function(req, res)
+    {  
+        let data = req.body;
+        console.log(data,"update serv item")
+       
+         // Declare Query 1
+         let query1 = `UPDATE service_items SET price =  '${data.price}' , service_item = '${data.service_item}';`
+         db.pool.query(query1, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.send("updated")
+            }
+        })                                          
+    });
+
+    app.post('/add-serviceitems-ajax', function(req, res){
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log(data)
+     
+        // Create the query and run it on the database
+        query1 = `INSERT INTO service_items (price, service_name) VALUES ('${data.price}','${data.service_name}');`
+        db.pool.query(query1, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+    
+            // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+            // presents it on the screen
+            else
+            {
+                res.redirect('/service_items');
+            }
+        })
+    })    
+
+
 /*
     LISTENER
 */
