@@ -27,15 +27,15 @@
             <td>{{this.price}}</td>
             <td>{{this.service_name}}</td>
             <td><button onclick="deleteServiceItems({{this.service_item_id}})">Delete</button></td>
-            <td><button onclick="updateServiceItems({{this.service_item_id}}),'{{this.price}}','{{this.service_name}}'">update</button></td>
+            <td><button onclick="updateServiceItems({{this.service_item_id}},'{{this.price}}','{{this.service_name}}')"> update </button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
 
 
-{{!-- By default hidden update service rep form.  --}}
-<div id='update-service-item-form-ajax' class='hidden'>
+{{!-- By default hidden update service items form.  --}}
+<div id='update-service-item-form' class='hidden'>
 <h2>Update Service Item</h2>
 <form id="update-service-item-form-ajax">
     <label for="update-price">Price: </label>
