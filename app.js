@@ -438,7 +438,7 @@ app.get('/service_items', function(req, res)
         console.log(data,"update serv item")
        
          // Declare Query 1
-         let query1 = `UPDATE service_items SET price =  '${data.price}' , service_item = '${data.service_item}';`
+         let query1 = `UPDATE service_items SET price =  '${data.price}' , service_name = '${data.service_name}' WHERE service_item_id  ='${data.service_item_id}';`
          db.pool.query(query1, function(error, rows, fields){
     
             // Check to see if there was an error

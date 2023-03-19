@@ -93,10 +93,10 @@ addRowToTable = (data) => {
 
 function updateServiceItems(ID,price,serviceName) {
 
-    console.log(ID,price,serviceName,"from 96")
+    console.log(ID,price,serviceName,"from add service items")
     
     // adds a attribute to the form with the service rep id to use it in delete query later.
-    let addUpdatedServiceItemForm = document.getElementById('update-service-item-form');
+    let addUpdatedServiceItemForm = document.getElementById('update-service-item-form-ajax');
     addUpdatedServiceItemForm.setAttribute("service_item_id_added",ID)
 
     let updateForm = document.getElementById("update-service-item-form")

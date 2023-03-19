@@ -6,11 +6,10 @@ addUpdatedServiceItemForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
     e.preventDefault();
-    console.log("SHOULD BE THE DATA ITEM ID",e.target.getAttribute("service_item_id_added"))
+    console.log("SHOULD BE THE DATA ITEM IDD",e.target.getAttribute("service_item_id_added"))
     // Get form fields we need to get data from (html id's must match the corresponding form fields.)
-    let inputPrice = document.getElementById("input-price");
-    let inputServiceName = document.getElementById("input-service_name");
-
+    let inputPrice = document.getElementById("update-price");
+    let inputServiceName = document.getElementById("update-service_name");
     // Get the values from the form fields (user inputs)
     let PriceValue = inputPrice.value;
     let ServiceNameValue = inputServiceName.value;
@@ -19,7 +18,10 @@ addUpdatedServiceItemForm.addEventListener("submit", function (e) {
     let data = {
         price: PriceValue,
         service_name: ServiceNameValue,
+        service_item_id: e.target.getAttribute("service_item_id_added")
     }
+
+    console.log(data, "from update service items 24 ")
     // Setup our AJAX request
     // For updates needs to be PUT
     var xhttp = new XMLHttpRequest();
