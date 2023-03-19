@@ -142,4 +142,44 @@ addRowToTable = (data) => {
     currentTable.appendChild(row);
 }
 
+function updateCustomer(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number) {
 
+    // adds a attribute to the form with the service rep id to use it in delete query later.
+    let addUpdatedServiceRepForm = document.getElementById('update-customer-form-ajax');
+    addUpdatedServiceRepForm.setAttribute("customer_id_added",ID)
+
+    let updateForm = document.getElementById("update_customer_form")
+    updateForm.classList.remove("hidden")
+    console.log(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number)
+    
+    // choose the form elements by ID on the update form
+    let inputFirstName = document.getElementById("update-fname");
+    let inputLastName = document.getElementById("update-lname");
+    let inputMidName = document.getElementById("update-midname");
+    let inputAddress1 = document.getElementById("update-address1");
+    let inputAddress2 = document.getElementById("update-address2");
+    let inputAddressCity = document.getElementById("update-address_city");
+    let inputAddressState = document.getElementById("update-address_state");
+    let inputAddressZip = document.getElementById("update-address_zip");
+    let inputPhoneNumber = document.getElementById("update-phone_number");
+
+    
+
+    // prepopulate the data for the form fields
+    inputFirstName.value = fname
+    inputLastName.value = lname
+    inputMidName.value = midname
+    inputAddress1.value = address1
+    inputAddress2.value = address2
+    inputAddressCity.value = address_city
+    inputAddressState.value = address_state
+    inputAddressZip.value = address_zip
+    inputPhoneNumber.value = phone_number
+    
+}
+
+
+function closeUpdateForm (){
+    let updateForm = document.getElementById("update_customer_form")
+    updateForm.classList.add("hidden")
+}

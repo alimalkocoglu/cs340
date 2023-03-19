@@ -96,6 +96,29 @@ app.post('/add-customer-ajax', function(req, res)
         })
     });
 
+    app.put('/update-customer-ajax', function(req, res)
+    {  
+        let data = req.body;
+        console.log(data,"update customer")
+       
+         // Declare Query 1
+         let query1 = `UPDATE customers SET first_name =  '${data.first_name}' , last_name = '${data.last_name}', middle_name = '${data.middle_name}', address1= '${data.address1}', address2= '${data.address2}', address_city= '${data.address_city}', address_state= '${data.address_state}', address_zip= '${data.address_zip}', phone_number = '${data.phone_number}' WHERE customer_id = '${data.customer_id}';`
+         db.pool.query(query1, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.send("updated")
+            }
+        })                                          
+    });
+
 
 /*
     service-represantative routes
