@@ -35,7 +35,7 @@
             <td>{{this.address_zip}}</td>
             <td>{{this.phone_number}}</td>
             <td><button onclick="deleteCustomer({{this.customer_id}})">Delete</button></td>
-            <td><button onclick="updateCustomer({{this.customer_id}},'{{this.first_name}}','{{this.last_name}}','{{this.middle_name}}','{{this.address1}}','{{this.address2}}','{{this.address_city}}','{{this.address_state}}','{{this.address_zip}}',{{this.phone_number}})">update</button></td>
+            <td><button onclick="updateCustomer({{this.customer_id}},'{{this.first_name}}','{{this.last_name}}','{{this.middle_name}}','{{this.address1}}','{{this.address2}}','{{this.address_city}}','{{this.address_state}}','{{this.address_zip}}','{{this.phone_number}}')">update</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -117,7 +117,7 @@
     <input type="text" name="input-addrzip" id="input-addrzip">
 
     <label for="input-phone_number">phone: </label>
-    <input type="text" name="input-phone_number" id="input-phone_number">
+    <input type="text" name="input-phonenum" id="input-phonenum">
 
     <input type="submit">
 </form>

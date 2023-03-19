@@ -56,8 +56,9 @@ console.log("from add customer js page")
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             console.log(xhttp.response, "from customer js")
             // Add the new data to the table
-            addRowToTable(xhttp.response);
-
+            // ******* README HERE ***** in the corrected version of this add customer page addRowToTable function is not used anymore instead here location.reload() is used. 
+            // addRowToTable(xhttp.response);
+            location.reload()
             // Clear the input fields for another transaction
             inputFirstName.value = '';
             inputLastName.value = '';
@@ -80,77 +81,15 @@ console.log("from add customer js page")
 })
 
 
-// Creates a single row from an Object representing a single record from 
-// bsg_people
-addRowToTable = (data) => {
-
-    // Get a reference to the current table on the page and clear it out.
-    let currentTable = document.getElementById("customers-table");
-
-    // Get the location where we should insert the new row (end of table)
-    let newRowIndex = currentTable.rows.length;
-
-    // Get a reference to the new row from the database query (last object)
-    let parsedData = JSON.parse(data);
-    let newRow = parsedData[parsedData.length - 1]
-
-    // Create a row and 10 cells
-    let row = document.createElement("TR");
-    let idCell = document.createElement("TD");
-    let firstNameCell = document.createElement("TD");
-    let lastNameCell = document.createElement("TD");
-    let midNameCell = document.createElement("TD");
-    let address1Cell = document.createElement("TD");
-    let address2Cell = document.createElement("TD");
-    let addressCityCell = document.createElement("TD");
-    let addressStateCell  = document.createElement("TD");
-    let addressZipCell  = document.createElement("TD");
-    let phone_numberCell  = document.createElement("TD");
-    let delete_cell = document.createElement("TD")
-    let delete_customer_btn = document.createElement("BUTTON")
-    delete_customer_btn.addEventListener("click",function(){
-        deleteCustomer(newRow.customer_id)
-    })
-
-    // Fill the cells with correct data
-    idCell.innerText = newRow.customer_id;
-    firstNameCell.innerText = newRow.first_name;
-    lastNameCell.innerText = newRow.last_name;
-    midNameCell.innerText = newRow.middle_name;
-    address1Cell.innerText  = newRow.address1;
-    address2Cell.innerText = newRow.address2;
-    addressCityCell.innerText = newRow.address_city;
-    addressStateCell.innerText = newRow.address_state;
-    addressZipCell.innerText  = newRow.address_zip;
-    phone_numberCell.innerText = newRow.phone_number
-    delete_customer_btn.innerText = "Delete"
-    delete_cell.appendChild(delete_customer_btn)
-
-    // Add the cells to the row 
-    row.appendChild(idCell);
-    row.appendChild(firstNameCell);
-    row.appendChild(lastNameCell);
-    row.appendChild(midNameCell);
-    row.appendChild(address1Cell);
-    row.appendChild(address2Cell);
-    row.appendChild(addressCityCell);
-    row.appendChild(addressStateCell);
-    row.appendChild(addressZipCell);
-    row.appendChild(phone_numberCell);
-    row.appendChild(delete_cell)
-    // Add the row to the table
-    currentTable.appendChild(row);
-}
-
 function updateCustomer(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number) {
-
+    console.log(phone_number, "phone number 146")
     // adds a attribute to the form with the service rep id to use it in delete query later.
     let addUpdatedServiceRepForm = document.getElementById('update-customer-form-ajax');
     addUpdatedServiceRepForm.setAttribute("customer_id_added",ID)
 
     let updateForm = document.getElementById("update_customer_form")
     updateForm.classList.remove("hidden")
-    console.log(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number)
+    console.log(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number, "from add customer js updata customer")
     
     // choose the form elements by ID on the update form
     let inputFirstName = document.getElementById("update-fname");
@@ -162,7 +101,7 @@ function updateCustomer(ID,fname,lname,midname,address1,address2,address_city,ad
     let inputAddressState = document.getElementById("update-address_state");
     let inputAddressZip = document.getElementById("update-address_zip");
     let inputPhoneNumber = document.getElementById("update-phone_number");
-
+    console.log(phone_number, "phone number 165")
     
 
     // prepopulate the data for the form fields

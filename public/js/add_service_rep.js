@@ -54,49 +54,6 @@ addServiceRepForm.addEventListener("submit", function (e) {
 
 })
 
-
-// Creates a single row from an Object representing a single record from 
-// bsg_people
-addRowToTable = (data) => {
-
-    // Get a reference to the current table on the page and clear it out.
-    let currentTable = document.getElementById("service-representatives-table");
-
-    // Get the location where we should insert the new row (end of table)
-    let newRowIndex = currentTable.rows.length;
-
-    // Get a reference to the new row from the database query (last object)
-    let parsedData = JSON.parse(data);
-    let newRow = parsedData[parsedData.length - 1]
-    console.log(newRow, "new row add ")
-    // Create a row and 10 cells
-    let row = document.createElement("TR");
-    let idCell = document.createElement("TD");
-    let firstNameCell = document.createElement("TD");
-    let lastNameCell = document.createElement("TD");
-    let midNameCell = document.createElement("TD");
-    let locationCell = document.createElement("TD");
-
-    // Fill the cells with correct data
-    idCell.innerText = newRow.service_rep_id;
-    firstNameCell.innerText = newRow.first_name;
-    lastNameCell.innerText = newRow.last_name;
-    midNameCell.innerText = newRow.middle_name;
-    locationCell.innerText  = newRow.location_name;
-
-    // Add the cells to the row 
-    row.appendChild(idCell);
-    row.appendChild(firstNameCell);
-    row.appendChild(lastNameCell);
-    row.appendChild(midNameCell);
-    row.appendChild(locationCell);
-
-    // Add the row to the table
-    currentTable.appendChild(row);
-}
-
-
-
 function updateServiceRep(ID,fname,lname,midname,locationName,locationID) {
 
     // adds a attribute to the form with the service rep id to use it in delete or update query later.
