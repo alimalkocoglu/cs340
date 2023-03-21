@@ -1,5 +1,5 @@
 {{!-- Create a table --}}
-<<table id="locations-table">>
+<table id="locations-table">
 
     {{!-- Header section --}}
     <thead>
@@ -13,6 +13,7 @@
             </th>
             {{/each}}
             <th>delete</th>
+            <th>edit</th>
         </tr>
     </thead>
 
@@ -31,11 +32,46 @@
             <td>{{this.phone_number}}</td>
             <td>{{this.location_name}}</td>
             <td><button onclick="deleteLocation({{this.location_id}})">Delete</button></td>
+            <td><button onclick="updateLocation({{this.location_id}},'{{this.address1}}','{{this.address2}}','{{this.address_city}}','{{this.address_state}}','{{this.address_zip}}','{{this.phone_number}}','{{this.location_name}}')">update</button></td>   
         </tr>
         {{/each}}
     </tbody>
 </table>
 
+{{!-- By default hidden update service rep form.  --}}
+<div id='update_location_form' class='hidden'>
+<h2>Update Location</h2>
+<form id="update-location-form-ajax">
+    <fieldset>
+
+    <label for="update-address1">Address 1: </label>
+    <input type="text" name="update-address1" id="update-address1">
+
+    <label for="update-address2">Adddress 2: </label>
+    <input type="text" name="update-address2" id="update-address2">
+
+    <label for="update-address_city">Address City: </label>
+    <input type="text" name="update-address_city" id="update-address_city">
+
+    <label for="update-address_state">Address State: </label>
+    <input type="text" name="update-address_state" id="update-address_state">
+
+    <label for="update-address_zip">Address Zip: </label>
+    <input type="text" name="update-address_zip" id="update-address_zip">
+
+    <label for="update-phone_number">Phone Number: </label>
+    <input type="text" name="update-phone_number" id="update-phone_number">
+
+    <label for="update-location_name">Location Name: </label>
+    <input type="text" name="update-location_name" id="update-location_name">
+
+
+    <input type="submit" value = "Submit Changes">
+    <input type="button" value="Cancel" onclick="closeUpdateForm()">
+    </fieldset>
+</form>
+
+</div>
 {{!-- Form to add a record to the table  --}}
 <h2>Add New Location</h2>
 <form id="add-location-form-ajax">
@@ -69,3 +105,4 @@
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_locations.js"></script>
 <script src="./js/delete_location.js"></script>
+<script src="./js/update_location.js"></script>

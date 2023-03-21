@@ -49,16 +49,7 @@ console.log("from add location js page")
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             console.log(xhttp.response, "from locations js")
             // Add the new data to the table
-            addRowToTable(xhttp.response);
-
-            // Clear the input fields for another transaction
-            inputAddress1.value = '';
-            inputAddress2.value = '';
-            inputAddrcity.value = '';
-            inputAddrstate.value = '';
-            inputAddrzip.value = '';
-            inputPhoneNum.value = '';
-            inputLocationName.value = '';
+            location.reload()
         } 
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -70,53 +61,39 @@ console.log("from add location js page")
 
 })
 
+function updateLocation(ID,address1,address2,address_city,address_state,address_zip,phone_number,location_name) {
+    // console.log(phone_number, "phone number 146")
+    // adds a attribute to the form with the service rep id to use it in delete query later.
+    let addUpdatedLocationForm = document.getElementById('update-location-form-ajax');
+    addUpdatedLocationForm.setAttribute("location_id_added",ID)
 
-// Creates a single row from an Object representing a single record from 
-// bsg_people
-addRowToTable = (data) => {
+    let updateForm = document.getElementById("update_location_form")
+    updateForm.classList.remove("hidden")
+    console.log(ID,address1,address2,address_city,address_state,address_zip,phone_number,location_name, "from add customer js updata customer")
+    
+    // choose the form elements by ID on the update form
+    let inputAddress1 = document.getElementById("update-address1");
+    let inputAddress2 = document.getElementById("update-address2");
+    let inputAddressCity = document.getElementById("update-address_city");
+    let inputAddressState = document.getElementById("update-address_state");
+    let inputAddressZip = document.getElementById("update-address_zip");
+    let inputPhoneNumber = document.getElementById("update-phone_number");
+    let inputLocationName =  document.getElementById("update-location_name");
+    // console.log(phone_number, "phone number 165")
+    
 
-    // Get a reference to the current table on the page and clear it out.
-    let currentTable = document.getElementById("locations-table");
+    // prepopulate the data for the form fields
+    inputAddress1.value = address1
+    inputAddress2.value = address2
+    inputAddressCity.value = address_city
+    inputAddressState.value = address_state
+    inputAddressZip.value = address_zip
+    inputPhoneNumber.value = phone_number
+    inputLocationName.value = location_name
+}
 
-    // Get the location where we should insert the new row (end of table)
-    let newRowIndex = currentTable.rows.length;
 
-    // Get a reference to the new row from the database query (last object)
-    let parsedData = JSON.parse(data);
-    let newRow = parsedData[parsedData.length - 1]
-
-    // Create a row and 10 cells
-    let row = document.createElement("TR");
-    let idCell = document.createElement("TD");
-    let address1Cell = document.createElement("TD");
-    let address2Cell = document.createElement("TD");
-    let addressCityCell = document.createElement("TD");
-    let addressStateCell  = document.createElement("TD");
-    let addressZipCell  = document.createElement("TD");
-    let phone_numberCell  = document.createElement("TD");
-    let location_nameCell = document.createElement("TD");
-
-    // Fill the cells with correct data
-    idCell.innerText = newRow.location_id;
-    address1Cell.innerText = newRow.address1;
-    address2Cell.innerText = newRow.address2;
-    addressCityCell.innerText = newRow.address_city;
-    addressStateCell.innerText = newRow.address_state;
-    addressZipCell.innerText  = newRow.address_zip;
-    phone_numberCell.innerText = newRow.phone_number;
-    location_nameCell.innerText = newRow.location_name;
-
-    // Add the cells to the row 
-    row.appendChild(idCell);
-    row.appendChild(address1Cell);
-    row.appendChild(address2Cell);
-    row.appendChild(addressCityCell);
-    row.appendChild(addressStateCell);
-    row.appendChild(addressZipCell);
-    row.appendChild(phone_numberCell);
-    row.appendChild(location_nameCell);
-
-    // Add the row to the table
-    currentTable.appendChild(row);
-
+function closeUpdateForm (){
+    let updateForm = document.getElementById("update_location_form")
+    updateForm.classList.add("hidden")
 }

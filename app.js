@@ -253,6 +253,31 @@ app.get('/locations', function (req, res) {
     })
 });
 
+
+
+app.put('/update-location-ajax', function(req, res)
+    {  
+        let data = req.body;
+        console.log(data,"update location")
+       
+         // Declare Query 1
+         let query1 = `UPDATE locations SET address1= '${data.address1}', address2= '${data.address2}', address_city= '${data.address_city}', address_state= '${data.address_state}', address_zip= '${data.address_zip}', phone_number = '${data.phone_number}', location_name = '${data.location_name}' WHERE location_id ='${data.location_id}';`
+         db.pool.query(query1, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.send("updated")
+            }
+        })                                          
+    });
+
 app.post('/add-location-ajax', function (req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
