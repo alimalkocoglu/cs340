@@ -57,7 +57,7 @@ addServiceRepForm.addEventListener("submit", function (e) {
 function updateServiceRep(ID,fname,lname,midname,locationName,locationID) {
 
     // adds a attribute to the form with the service rep id to use it in delete or update query later.
-    let addUpdatedServiceRepForm = document.getElementById('update-service-rep-form');
+    let addUpdatedServiceRepForm = document.getElementById('update-service-rep-form-ajax');
     addUpdatedServiceRepForm.setAttribute("serv_rep_id_added",ID)
 
     let updateForm = document.getElementById("update_rep_form")

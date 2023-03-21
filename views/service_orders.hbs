@@ -11,68 +11,116 @@
             <th> rep name </th>
             <th> rep last name </th>
             <th> customer name </th>
-            <th>  customer last name </th>
+            <th> customer last name </th>
             <th> license plate </th>
             <th> make </th>
             <th> model </th>
-            <th> date created </th>
-            <th> date completed </th>
-            <th>delete</th>
+            <th> completion status </th>
+            <th> service order</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
 
     {{!-- Body section --}}
     <tbody>
 
-        {{!-- For each row, print the id, fname, lname, namemid and location_name, in order --}}
+        {{!-- For each row, print the id, fname, lname, namemid and location_name, in order --}}    
         {{#each data}}
-        <tr data-value={{this.location_id}}>
+        <tr data-value={{this.service_order_id}}>
             <td>{{this.service_rep_id}}</td>
             <td>{{this.rep_firstname}}</td>
             <td>{{this.rep_lastname}}</td>
             <td>{{this.customer_firstname}}</td>
-            <td>{{this.customer_lastname}}</td>
+            <td>{{this.customer_lastname}}</td>s
             <td>{{this.license_plate}}</td>
             <td>{{this.make}}</td>
             <td>{{this.model}}</td>
-            <td>{{this.service_date_created}}</td>
-            <td>{{this.service_date_completed}}</td>
-            <td><button onclick="deleteLocation({{this.location_id}})">Delete</button></td>
+            <td>{{#if this.is_completed}}Completed{{else}}Incomplete{{/if}}</td>
+            <td>{{this.service_order_id}}</td>
+            <td><button onclick="updateServiceOrder({{this.service_order_id}})">Update</button></td>
+            <td><button onclick="deleteLocation({{this.service_order_id}})">Delete</button></td>
+            <td><button onclick="addRemoveItems({{this.service_order_id}})">Add-remove item </button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
 
 {{!-- Form to add a record to the table  --}}
-<h2>Add New Location</h2>
-<form id="add-location-form-ajax">
+<h2>Add Service Order</h2>
+<form id="add-service-order-form-ajax">
+    <select name="input-rep" id="input-rep-ajax-service-orders">
+        <option value="">Select a rep</option>
+        {{#each reps}}
+        <option value="{{this.service_rep_id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+    </select>
 
-    <label for="input-address1">Address1: </label>
-    <input type="text" name="input-address1" id="input-address1">
+    <select name="input-customer" id="input-customer-ajax-service-orders">
+        <option value="">Select a customer</option>
+        {{#each customers}}
+        <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+    </select>
     
-    <label for="input-address2">Address2: </label>
-    <input type="text" name="input-address2" id="input-address2">
-
-    <label for="input-addrcity">Address City: </label>
-    <input type="text" name="input-addrcity" id="input-addrcity">
-
-    <label for="input-addrstate">Address State: </label>
-    <input type="text" name="input-addrstate" id="input-addrstate">
-
-    <label for="input-addrzip">Address Zip: </label>
-    <input type="text" name="input-addrzip" id="input-addrzip">
-
-    <label for="input-phonenum">Phone Number: </label>
-    <input type="text" name="input-phonenum	" id="input-phonenum">
-
-    <label for="input-locationname">Location Name: </label>
-    <input type="text" name="input-	locationname" id="input-locationname">
-
-
+    <select name="input-vehicle" id="input-vehicle-ajax-service-orders">
+        <option value="">Select a vehicle</option>
+    </select>
 
     <input type="submit">
 </form>
 
+
+{{!-- By default hidden update service order form.  --}}
+
+<div id='update_service_order_form' class='hidden'>
+<h2 id="h2forUpDate"></h2>
+
+<form id="update-service-order-form-ajax">
+  <select name="status" id="update-status-ajax-service-orders">
+        <option value="">Select a status</option>
+        <option value="1"> Service completed</option>
+        <option value="0"> Service not completed</option>
+    </select>
+
+<select name="update-rep" id="update-rep-ajax-service-orders">
+        <option value="">Select a rep</option>
+        {{#each reps}}
+        <option value="{{this.service_rep_id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+</select>
+    <input type="submit" value = "Submit Changes">
+    <input type="button" value="Cancel" onclick="closeUpdateForm()">
+</form>
+
+</div>
+
+
+{{!-- By default hidden update service order form.  --}}
+
+<div id='update_service_order_form' class='hidden'>
+<h2 id="h2forUpDate"></h2>
+
+<form id="update-service-order-form-ajax">
+  <select name="status" id="update-status-ajax-service-orders">
+        <option value="">Select a status</option>
+        <option value="1"> Service completed</option>
+        <option value="0"> Service not completed</option>
+    </select>
+
+<select name="update-rep" id="update-rep-ajax-service-orders">
+        <option value="">Select a rep</option>
+        {{#each reps}}
+        <option value="{{this.service_rep_id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+</select>
+    <input type="submit" value = "Submit Changes">
+    <input type="button" value="Cancel" onclick="closeUpdateForm()">
+</form>
+
+</div>
+
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_locations.js"></script>
-<script src="./js/delete_location.js"></script>
+<script src="./js/add_service_order.js"></script>
+<script src="./js/update_service_order.js"></script>

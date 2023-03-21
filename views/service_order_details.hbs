@@ -1,0 +1,66 @@
+{{!-- Create a table --}}
+<table id="service-order-details-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the paddrstate renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, namemid and location_name, in order --}}
+        {{#each data}}
+        <tr data-value={{this.service_order_id}}>
+            <td>{{this.service_order_id}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.service_name}}</td>
+            <td><button onclick="deleteServiceItems({{this.service_item_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+{{!-- By default hidden update service items form.  --}}
+<div id='update-service-item-form' class='hidden'>
+<h2>Update Service Item</h2>
+<form id="update-service-item-form-ajax">
+    <label for="update-price">Price: </label>
+    <input type="text" name="update-price" id="update-price">
+    
+    <label for="update-service_name">Service Name: </label>
+    <input type="text" name="update-service_name" id="update-service_name">
+
+    <input type="submit" value = "Submit Changes">
+    <input type="button" value="Cancel" onclick="closeUpdateForm()">
+</form>
+
+</div>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add New Service Item</h2>
+<form id="add-service-item-form-ajax">
+    <label for="input-price">Price: </label>
+    <input type="text" name="input-price" id="input-price">
+    
+    <label for="input-service_name">Service Name: </label>
+    <input type="text" name="input-service_name" id="input-service_name">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_service_items.js"></script>
+<script src="./js/delete_service_items.js"></script>
+<script src="./js/update_service_items.js"></script>
