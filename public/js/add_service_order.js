@@ -113,9 +113,9 @@ function closeUpdateForm (){
 
 
 function addRemoveItems(id){
-    console.log(id, " from 114 add remove items")
     closeUpdateForm()
+    // open the service_order_details page with the service_order_id
     window.location.href = `/service_order_details?order_id=${id}`
-    ///service_order_details/:id?service_order_id=${id}
+  
 
 }

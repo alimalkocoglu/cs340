@@ -294,45 +294,42 @@ app.post('/add-location-ajax', function (req, res) {
 /*
     customer vehicle routes
 */
-app.get('/customer_vehicles', function (req, res) {
+app.get('/customer_vehicles', function(req, res)
+{  
     let data = req.body;
-    // Declare Query 1
-    let query1 = `SELECT customer_id, vehicle_id, vin_number, make, model, year, mileage, trim, engine_type, license_plate	FROM customer_vehicles ORDER BY customer_id ASC;`
+     // Declare Query 1
+    //  let query1 = `SELECT customer_id, vehicle_id, vin_number, make, model, year, mileage, trim, engine_type, license_plate, customer_vehicle.customer_id FROM customer_vehicle JOIN customer_id ON customer.customer_id =  customer_vehicle.customer_id FROM customer_vehicles ORDER BY customer_id ASC;`
+     let query1 = `SELECT customer_id, vehicle_id, vin_number, make, model, year, mileage, trim, engine_type, license_plate	FROM customer_vehicles ORDER BY customer_id ASC;`
 
-    // Run the 1st query
-    db.pool.query(query1, function (error, rows, fields) {
-
-        // Save the locations
-        let customer_vehicle = rows;
-        return res.render('customer_vehicle', { data: customer_vehicle, customer_vehicle: customer_vehicle });
-
-    })
+     // Query 2 is the same in both cases
+     let query2 = "SELECT * FROM customers;";
+ 
+     // Run the 1st query
+     db.pool.query(query1, function(error, rows, fields){
+         
+         // Save the service reps
+         let customer_vehicle = rows;
+         
+         // Run the second query
+         db.pool.query(query2, (error, rows, fields) => {
+             
+             // Save the locations
+             let customers = rows;
+             return res.render('customer_vehicle', {data: customer_vehicle, customers: customers});
+         })                                                    
+})
 });
-
-app.get('/customer_vehicles/:id', function (req, res) {
-    let customer_id = req.params.id
     
-    // Declare Query 1
-    let query1 = `SELECT  vehicle_id, make, model, year,license_plate FROM customer_vehicles WHERE customer_id = ${customer_id};`
 
-    // Run the 1st query
-    db.pool.query(query1, function (error, rows, fields) {
-
-        // Save the locations
-        let customer_vehicle = rows;
-        return res.send(customer_vehicle);
-
-    })
-});
-
-app.post('/add-customer-vehicle-form-ajax', function (req, res) {
+app.post('/add-customer-vehicle-ajax', function(req, res) 
+{
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
-    console.log("88 line app.js", data)
+    console.log("88 line app.js",data)
     // Create the query and run it on the database 
-
-    query1 = `INSERT INTO customer_vehicle (vin_number, make, model, year, mileage, trim, engine_type, license_plate) VALUES ('${data.vin_number}', '${data.make}', '${data.model}','${data.year}','${data.mileage}','${data.trim}','${data.engine_type}','${data.license_plate}')`;
-    db.pool.query(query1, function (error, rows, fields) {
+    
+    query1 = `INSERT INTO customer_vehicles (customer_id, vin_number, make, model, year, mileage, trim, engine_type, license_plate) VALUES ('${data.customer_id}', '${data.vin_number}', '${data.make}', '${data.model}','${data.year}','${data.mileage}','${data.trim}','${data.engine_type}','${data.license_plate}')`;
+    db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
         if (error) {
@@ -341,24 +338,66 @@ app.post('/add-customer-vehicle-form-ajax', function (req, res) {
             console.log(error)
             res.sendStatus(400);
         }
-        else {
+        else
+        {
 
-            // If there was an error on the second query, send a 400
-            if (error) {
-
-                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error);
-                res.sendStatus(400);
-            }
-            // If all went well, send the results of the query back.
-            else {
-                res.send(rows);
-            }
+            query2 = `SELECT * FROM customer_vehicles;`;
+            db.pool.query(query2, function(error, rows, fields){
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
 
         }
     })
 });
 
+app.delete('/delete-customer-vehicle-ajax', function(req,res,next){
+    let data = req.body;
+    let vehicle_id = parseInt(data.vehicle_id);
+    console.log(vehicle_id)
+    let deleteCustomerVehicle= `DELETE FROM customer_vehicles WHERE vehicle_id = ${vehicle_id};`
+  
+    db.pool.query(deleteCustomerVehicle, [vehicle_id], function(error, rows, fields) {
+  
+    if (error) {
+     console.log(error);
+     res.sendStatus(400);
+    } else {
+        res.sendStatus(204);
+        }
+})
+});
+
+app.put('/update-customer-vehicle-ajax', function(req, res)
+{  
+    let data = req.body;   
+     // Declare Query 1
+     let query1 = `UPDATE customer_vehicles SET customer_id = ${data.customer_id}, vin_number =  '${data.vin_number}' , make = '${data.make}', model = '${data.model}', year= '${data.year}', mileage = ${data.mileage}, trim = '${data.trim}', engine_type = '${data.engine_type}', license_plate = '${data.license_plate}' WHERE vehicle_id = ${data.vehicle_id};`
+     db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            res.send("updated")
+        }
+    })                                          
+});
 
 
 /*
@@ -556,47 +595,83 @@ app.get('/service_order_details', function (req, res) {
     let query1 = `SELECT 
     service_order_id,
     service_name,
-    price
+    price,
+    service_order_details.service_item_id
     FROM 
     service_items
     INNER JOIN
     service_order_details ON service_items.service_item_id = service_order_details.service_item_id
     WHERE service_order_id = ${order_id};`
 
+    // declare query 2
+
+    let query2 = "SELECT * FROM service_items;";
     //Run the 1st query
-    db.pool.query(query1, function (error, rows, fields) {
+   
+    db.pool.query(query1, function (error1, service_order_detail, fields) {
 
         // Save the locations
-        let order_details = rows;
-        return res.render('order details', { data: order_details});
 
+        if (error1) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error1)
+            res.sendStatus(400);
+        }
+        else {
+        //Run the second query
+            db.pool.query(query2, function (error2, service_items, fields) {
+                if (error2){
+                console.log(error2)
+                res.sendStatus(400);             
+                }
+                else {
+                    res.render('service_order_details', { service_order_detail: service_order_detail, service_items: service_items, order_id:order_id})
+
+                }
+        })
+        }
     })
 });
 
-app.get('/service_representatives', function (req, res) {
+app.post('/add-service-item-to-order-ajax', function (req, res) {
+    // Capture the incoming data and parse it back to a JS object
     let data = req.body;
-    // Declare Query 1
-    let query1 = `SELECT service_rep_id, first_name, last_name, middle_name, location_name , service_representatives.location_id FROM service_representatives LEFT JOIN locations ON locations.location_id = service_representatives.location_id ORDER BY service_rep_id ASC;`
+    console.log(data)
 
-    // Query 2 is the same in both cases
-    let query2 = "SELECT * FROM locations;";
-
-    // Run the 1st query
+    // Create the query and run it on the database
+    query1 = `INSERT INTO service_order_details (service_order_id, service_item_id) VALUES (${data.service_order_id},${data.service_item_id});`
     db.pool.query(query1, function (error, rows, fields) {
 
-        // Save the service reps
-        let service_reps = rows;
+        // Check to see if there was an error
+        if (error) {
 
-        // Run the second query
-        db.pool.query(query2, (error, rows, fields) => {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else {
+            res.send("done");
+        }
+    })
+})
 
-            // Save the locations
-            let locations = rows;
-            return res.render('service_reps', { data: service_reps, locations: locations });
-        })
+app.delete('/delete-service-item-from-order', function (req, res, next) {
+    let data = req.body;
+    console.log(data)
+    let service_item_id = parseInt(data.service_item_id);
+    let deleteServiceItems = `DELETE FROM service_order_details WHERE service_item_id = ${data.service_item_id} AND service_order_id=${data.service_order_id} ;`
+
+    db.pool.query(deleteServiceItems,function (error, rows, fields) {
+
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
     })
 });
-
 
 /*
     LISTENER

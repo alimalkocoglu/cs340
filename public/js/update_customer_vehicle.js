@@ -1,54 +1,56 @@
 // Get the objects we need to modify
+let addupdateCustomerVehicle = document.getElementById('update-customer-vehicle-form-ajax');
 
-let addUpdatedCustomerForm = document.getElementById('update-customer-form-ajax');
 // Modify the objects we need
-addUpdatedCustomerForm.addEventListener("submit", function (e) {
-    
+addupdateCustomerVehicle.addEventListener("submit", function (e) {
+    console.log("SHOULD BE THE DATA vehicle ID",e.target.getAttribute("vehicle_id_added"))
+
     // Prevent the form from submitting
     e.preventDefault();
-    console.log("SHOULD BE THE DATA CUSTOMER ID",e.target.getAttribute("customer_id_added"))
-    // Get form fields we need to get data from (html id's must match the corresponding form fields.)
-    let inputFirstName = document.getElementById("update-fname");
-    let inputLastName = document.getElementById("update-lname");
-    let inputMidName = document.getElementById("update-midname");
-    let inputAddress1 = document.getElementById("update-address1");
-    let inputAddress2 = document.getElementById("update-address2");
-    let inputAddressCity = document.getElementById("update-address_city");
-    let inputAddressState = document.getElementById("update-address_state");
-    let inputAddressZip = document.getElementById("update-address_zip");
-    let inputPhoneNumber = document.getElementById("update-phone_number");
-    
 
-    // Get the values from the form fields (user inputs)
-    let firstNameValue = inputFirstName.value;
-    let lastNameValue = inputLastName.value;
-    let midNameValue = inputMidName.value;
-    let address1Value = inputAddress1.value;
-    let address2Value = inputAddress2.value;
-    let addressCityValue = inputAddressCity.value;
-    let addressStateValue = inputAddressState.value;
-    let addressZipValue = inputAddressZip.value;
-    let PhoneNumberValue = inputPhoneNumber.value;
+
+    // Get form fields we need to get data from
+    let inputCustomerID = document.getElementById("update-customer-ajax-custvehicle")
+    let inputVinNumber = document.getElementById("update-vin_number");
+    let inputMake = document.getElementById("update-make");
+    let inputModel = document.getElementById("update-model");
+    let inputYear= document.getElementById("update-year");
+    let inputMilage= document.getElementById("update-mileage");
+    let inputTrim= document.getElementById("update-trim");
+    let inputEngineType= document.getElementById("update-engine_type");
+    let inputLicensePlate= document.getElementById("update-license_plate");
+
+
+    // Get the values from the form fields
+    let CustomerID_Value = inputCustomerID.value;
+    let VinNumberValue = inputVinNumber.value;
+    let MakeValue = inputMake.value;
+    let ModelValue = inputModel.value;
+    let YearValue = inputYear.value;
+    let MilageValue = inputMilage.value;
+    let TrimValue = inputTrim.value;
+    let EngineTypeValue = inputEngineType.value;
+    let LicensePlateValue =inputLicensePlate.value;
+
 
     // Put our data we want to send in a javascript object
     let data = {
-        first_name: firstNameValue,
-        last_name: lastNameValue,
-        middle_name: midNameValue,  
-        address1: address1Value,
-        address2: address2Value, 
-        address_city: addressCityValue, 
-        address_state: addressStateValue, 
-        address_zip: addressZipValue, 
-        phone_number: PhoneNumberValue, 
-        // this is coming from the add_service_rep.js page function updateServiceRep
-        customer_id: e.target.getAttribute("customer_id_added")
+        customer_id: CustomerID_Value,
+        vin_number: VinNumberValue,
+        make: MakeValue,  
+        model: ModelValue,
+        year: YearValue,
+        mileage : MilageValue,
+        trim :TrimValue,
+        engine_type: EngineTypeValue,
+        license_plate: LicensePlateValue,
+        vehicle_id: e.target.getAttribute("vehicle_id_added")
     }
-
+    
     // Setup our AJAX request
-    // For updates needs to be PUT
+
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "/update-customer-ajax", true);
+    xhttp.open("PUT", "/update-customer-vehicle-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -63,7 +65,8 @@ addUpdatedCustomerForm.addEventListener("submit", function (e) {
         }
     }
 
-    // Send the request to the server and wait for the response
+    // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
 
 })
+

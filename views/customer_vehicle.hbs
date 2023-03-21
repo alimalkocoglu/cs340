@@ -38,8 +38,7 @@
             <td>{{this.engine_type}}</td>
             <td>{{this.license_plate}}</td>
             <td><button onclick="deleteCustomerVehicle({{this.vehicle_id}})">Delete</button></td>
-            <td><button onclick="updateCustomerVehicle({{this.vehicle_id}},'{{this.vin_number}}','{{this.make}}','{{this.model}}','{{this.year}}','{{this.mileage}}','{{this.trim}}','{{this.engine_type}}','{{this.license_plate}}')">update</button></td>
-            {{!-- <td><button onclick="updateCustomer({{this.customer_id}},'{{this.first_name}}','{{this.last_name}}','{{this.middle_name}}','{{this.address1}}','{{this.address2}}','{{this.address_city}}','{{this.address_state}}','{{this.address_zip}}','{{this.phone_number}}')">update</button></td> --}}
+            <td><button onclick="updateCustomerVehicle('{{this.vehicle_id}}','{{this.customer_id}}','{{this.vin_number}}','{{this.make}}','{{this.model}}','{{this.year}}','{{this.mileage}}','{{this.trim}}','{{this.engine_type}}','{{this.license_plate}}')">update</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -50,6 +49,13 @@
 <div id='update_customer_vehicle_form' class='hidden'>
 <h2>Update Customer Vehicle</h2>
 <form id="update-customer-vehicle-form-ajax">
+
+    <select name="update-location" id="update-customer-ajax-custvehicle">
+        <option value="">Select a customer</option>
+        {{#each customers}}
+        <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+    </select>
 
     <label for="update-vin_number">Vin Number: </label>
     <input type="text" name="update-vin_number" id="update-vin_number">
@@ -74,7 +80,6 @@
 
     <label for="update-license_plate">License Plate: </label>
     <input type="text" name="update-license_plate" id="update-license_plate">
-
 
     <input type="submit" value = "Submit Changes">
     <input type="button" value="Cancel" onclick="closeUpdateForm()">

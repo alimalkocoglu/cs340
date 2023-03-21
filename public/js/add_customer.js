@@ -1,74 +1,75 @@
-
 // Get the objects we need to modify
-let addCustomerForm = document.getElementById('add-customer-form-ajax');
+let addCustomerVehicleForm = document.getElementById('add-customer-vehicle-form-ajax');
 
 // Modify the objects we need
-addCustomerForm.addEventListener("submit", function (e) {
+addCustomerVehicleForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from (html id's must match the corresponding form fields.)
-    let inputFirstName = document.getElementById("input-fname");
-    let inputLastName = document.getElementById("input-lname");
-    let inputMidName = document.getElementById("input-midname");
-    let inputAddress1= document.getElementById("input-address1");
-    let inputAddress2= document.getElementById("input-address2");
-    let inputAddrcity= document.getElementById("input-addrcity");
-    let inputAddrstate= document.getElementById("input-addrstate");
-    let inputAddrzip= document.getElementById("input-addrzip"); 
-    let inputPhoneNum= document.getElementById("input-phonenum");
+    // let inputCustomerID = document.getElementById("input-customer_id")
+    let inputCustomerID = document.getElementById("input-customer-ajax-customer-vehicle");
+    let inputVinNumber = document.getElementById("input-vin_number");
+    let inputMake = document.getElementById("input-make");
+    let inputModel = document.getElementById("input-model");
+    let inputYear= document.getElementById("input-year");
+    let inputMilage= document.getElementById("input-mileage");
+    let inputTrim= document.getElementById("input-trim");
+    let inputEngineType= document.getElementById("input-engine_type");
+    let inputLicensePlate= document.getElementById("input-license_plate");
+
+    console.log(inputCustomerID.value, "Line 21");
     
     // Get the values from the form fields (user inputs)
-    let firstNameValue = inputFirstName.value;
-    let lastNameValue = inputLastName.value;
-    let midNameValue = inputMidName.value;
-    let address1Value = inputAddress1.value;
-    let address2Value = inputAddress2.value;
-    let addressCityValue = inputAddrcity.value;
-    let addressStateValue = inputAddrstate.value;
-    let addressZipValue =inputAddrzip.value;
-    let phoneNumValue = inputPhoneNum.value;
+    let CustomerID_Value = inputCustomerID.value;
+    let VinNumberValue = inputVinNumber.value;
+    let MakeValue = inputMake.value;
+    let ModelValue = inputModel.value;
+    let YearValue = inputYear.value;
+    let MilageValue = inputMilage.value;
+    let TrimValue = inputTrim.value;
+    let EngineTypeValue = inputEngineType.value;
+    let LicensePlateValue =inputLicensePlate.value;
 
     // Put our data we want to send in a javascript object
     let data = {
-        first_name: firstNameValue,
-        last_name: lastNameValue,
-        middle_name: midNameValue,  
-        address1: address1Value,
-        address2: address2Value,
-        address_city : addressCityValue,
-        address_state :addressStateValue,
-        address_zip: addressZipValue,
-        phone_number: phoneNumValue
+        customer_id: CustomerID_Value,
+        vin_number: VinNumberValue,
+        make: MakeValue,  
+        model: ModelValue,
+        year: YearValue,
+        mileage : MilageValue,
+        trim :TrimValue,
+        engine_type: EngineTypeValue,
+        license_plate: LicensePlateValue
     }
     
-console.log("from add customer js page")
+console.log("from add_customer_vehicle js page")
 
 
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/add-customer-ajax", true);
+    xhttp.open("POST", "/add-customer-vehicle-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            console.log(xhttp.response, "from customer js")
+            console.log(xhttp.response, "from customer_vehicle js")
             // Add the new data to the table
-            // ******* README HERE ***** in the corrected version of this add customer page addRowToTable function is not used anymore instead here location.reload() is used. 
             // addRowToTable(xhttp.response);
+
             location.reload()
             // Clear the input fields for another transaction
-            inputFirstName.value = '';
-            inputLastName.value = '';
-            inputMidName.value = '';
-            inputAddress1.value = '';
-            inputAddress2.value = '';
-            inputAddrcity.value = '';
-            inputAddrstate.value = '';
-            inputAddrzip.value = '';
-            inputPhoneNum.value = '';
+            inputVinNumber.value = '';
+            inputMake.value = '';
+            inputModel.value = '';
+            inputYear.value = '';
+            inputMilage.value = '';
+            inputTrim.value = '';
+            inputEngineType.value = '';
+            inputLicensePlate.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -81,44 +82,96 @@ console.log("from add customer js page")
 })
 
 
-function updateCustomer(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number) {
-    console.log(phone_number, "phone number 146")
-    // adds a attribute to the form with the service rep id to use it in delete query later.
-    let addUpdatedServiceRepForm = document.getElementById('update-customer-form-ajax');
-    addUpdatedServiceRepForm.setAttribute("customer_id_added",ID)
+addRowToTable = (data) => {
 
-    let updateForm = document.getElementById("update_customer_form")
-    updateForm.classList.remove("hidden")
-    console.log(ID,fname,lname,midname,address1,address2,address_city,address_state,address_zip,phone_number, "from add customer js updata customer")
-    
-    // choose the form elements by ID on the update form
-    let inputFirstName = document.getElementById("update-fname");
-    let inputLastName = document.getElementById("update-lname");
-    let inputMidName = document.getElementById("update-midname");
-    let inputAddress1 = document.getElementById("update-address1");
-    let inputAddress2 = document.getElementById("update-address2");
-    let inputAddressCity = document.getElementById("update-address_city");
-    let inputAddressState = document.getElementById("update-address_state");
-    let inputAddressZip = document.getElementById("update-address_zip");
-    let inputPhoneNumber = document.getElementById("update-phone_number");
-    console.log(phone_number, "phone number 165")
-    
+    // Get a reference to the current table on the page and clear it out.
+    let currentTable = document.getElementById("customers-vehcile-table");
 
-    // prepopulate the data for the form fields
-    inputFirstName.value = fname
-    inputLastName.value = lname
-    inputMidName.value = midname
-    inputAddress1.value = address1
-    inputAddress2.value = address2
-    inputAddressCity.value = address_city
-    inputAddressState.value = address_state
-    inputAddressZip.value = address_zip
-    inputPhoneNumber.value = phone_number
-    
+    // Get the location where we should insert the new row (end of table)
+    let newRowIndex = currentTable.rows.length;
+
+    // Get a reference to the new row from the database query (last object)
+    let parsedData = JSON.parse(data);
+    let newRow = parsedData[parsedData.length - 1]
+
+    // Create a row and 10 cells
+    let row = document.createElement("TR");
+    let idCell = document.createElement("TD");
+    // let customeridCell = document.createElement("TD");
+    let vinNumberCell = document.createElement("TD");
+    let makeCell = document.createElement("TD");
+    let modelCell = document.createElement("TD");
+    let yearCell = document.createElement("TD");
+    let milageCell = document.createElement("TD");
+    let trimCell = document.createElement("TD");
+    let engineTypeCell  = document.createElement("TD");
+    let licensePlateCell  = document.createElement("TD");
+
+    // Fill the cells with correct data
+    // customeridCell.innerText = newRow.id;
+    idCell.innerText = newRow.id;
+    vinNumberCell.innerText = newRow.vin_number;
+    makeCell.innerText = newRow.make;
+    modelCell.innerText = newRow.model;
+    yearCell.innerText  = newRow.year;
+    milageCell.innerText = newRow.mileage;
+    trimCell.innerText = newRow.trim;
+    engineTypeCell.innerText = newRow.engine_type;
+    licensePlateCell.innerText  = newRow.license_plate;
+
+    // Add the cells to the row 
+    // row.appendChild(customeridCell);
+    row.appendChild(idCell);
+    row.appendChild(vinNumberCell);
+    row.appendChild(makeCell);
+    row.appendChild(modelCell);
+    row.appendChild(yearCell);
+    row.appendChild(milageCell);
+    row.appendChild(trimCell);
+    row.appendChild(engineTypeCell);
+    row.appendChild(licensePlateCell);
+
+    // Add the row to the table
+    currentTable.appendChild(row);
 }
 
 
+function updateCustomerVehicle(vehicleID,customerID,vin_number,make,model,year,milage,trim,engine_type,license_plate) {
+
+    console.log(vehicleID,vin_number,make,model,year,milage,trim,engine_type,license_plate,"from updatecustomerVehicle")
+    
+    // adds a attribute to the form with the service rep id to use it in delete query later.
+    let addUpdatedCustomerVehicleForm = document.getElementById("update-customer-vehicle-form-ajax");
+    addUpdatedCustomerVehicleForm.setAttribute("customer_vehicle_id_added",vehicleID)
+
+    let updateForm = document.getElementById("update_customer_vehicle_form")
+    updateForm.classList.remove("hidden")
+   
+    
+    // choose the form elements by ID on the update form
+    let inputVinNumber = document.getElementById("update-vin_number");
+    let inputMake = document.getElementById("update-make");
+    let inputModel = document.getElementById("update-model");
+    let inputYear= document.getElementById("update-year");
+    let inputMilage= document.getElementById("update-mileage");
+    let inputTrim= document.getElementById("update-trim");
+    let inputEngineType= document.getElementById("update-engine_type");
+    let inputLicensePlate= document.getElementById("update-license_plate");
+
+
+    // prepopulate the data for the form fields
+    inputVinNumber.value =vin_number
+    inputMake.value = make
+    inputModel.value = model
+    inputYear.value = year
+    inputMilage.value = milage
+    inputTrim.value = trim
+    inputEngineType.value = engine_type
+    inputLicensePlate.value = license_plate
+
+}
+
 function closeUpdateForm (){
-    let updateForm = document.getElementById("update_customer_form")
+    let updateForm = document.getElementById("update-customer-vehicle-form")
     updateForm.classList.add("hidden")
 }
